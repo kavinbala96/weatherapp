@@ -22,7 +22,7 @@ def query_specific_sensor():
         if (sensor_location[0]) == '':
             return jsonify({"message": "please provide sensor location in the headers"})
 
-        # DOES DATE & TIME VALIDATION FOR US WHICH IS GREAT!!
+        # STRPTIME DOES DATE & TIME VALIDATION FOR US WHICH IS GREAT!!
         if datetime.strptime(from_range, "%Y-%m-%d %H:%M:%S").timestamp() < datetime.strptime(to_range, "%Y-%m-%d %H:%M:%S").timestamp():
 
                 
@@ -67,13 +67,13 @@ def aggregate_metrics_from_sensor():
         from_range = request.headers.get('start',(datetime.now()-timedelta(hours=3)).strftime("%Y-%m-%d %H:%M:%S"))
         to_range = request.headers.get('end',datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         sensor_location = request.headers.get('location',None)
-        aggregate_type = request.headers.get('type','avg')
+        aggregate_type = request.headers.get('type','avg') # Default is avg if user doesn't supply type of aggregation, others are min and max
 
         # CHECK IF USER INCLUDED SENSOR LOCATION
         if not sensor_location:
             return jsonify({"message": "please provide sensor location in the headers"})
 
-        # DOES DATE & TIME VALIDATION FOR US WHICH IS GREAT!!
+        # STRPTIME DOES DATE & TIME VALIDATION FOR US WHICH IS GREAT!!
         if datetime.strptime(from_range, "%Y-%m-%d %H:%M:%S").timestamp() < datetime.strptime(to_range, "%Y-%m-%d %H:%M:%S").timestamp():
 
             custom_query =  {
@@ -120,7 +120,7 @@ def aggregate_metrics_from_sensor():
                 }
             }
 
-            return jsonify({ "range":f'{from_range} to {to_range} ' ,"average_metrics": elastic_client.search(index="weatherdata", body=custom_query).get('aggregations')})
+            return jsonify({ "range":f'{from_range} to {to_range} ' ,f"{aggregate_type}_metrics": elastic_client.search(index="weatherdata", body=custom_query).get('aggregations')})
         
         else:
 

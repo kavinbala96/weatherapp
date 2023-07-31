@@ -27,7 +27,7 @@ and add "xpack.security.enabled: false" without quotes at the end of the file an
 -  Run "python app.py" without quotes from cmd to start the application. Default port is 5000
 -  Use the Postman collection provided to aggregate weather data and query specific metric
 -  The Postman collection contains 4 endpoints in total:
-    -  2 endpoints that point to the python app (query sensor data and aggregate metrics) 
+    -  2 endpoints that point to the python app (query sensor data and aggregate metrics (max & min types supported as well)) 
     -  2 endpoints that point to elasticsearch DB ( POST sensor data to DB and delete the index).
 
 ## Things to Note
