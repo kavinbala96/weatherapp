@@ -1,0 +1,141 @@
+{
+	"info": {
+		"_postman_id": "0b2f0ff3-a3f5-447a-a8db-afd760aed730",
+		"name": "weatherdata",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13293933"
+	},
+	"item": [
+		{
+			"name": "delete elasticache index",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9200/weatherdata",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"weatherdata"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST data like a sensor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"temperature\" : \"18\",\r\n\"humidity\" :  \"14\",\r\n\"windspeed\":  \"12\",\r\n\"timestamp\": \"2023-07-30 12:00:00\",\r\n\"sensor_location\": \"ny\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9200/weatherdata/_doc/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"weatherdata",
+						"_doc",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get sensor data",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "start",
+						"value": "2023-07-30 00:00:00",
+						"type": "text"
+					},
+					{
+						"key": "end",
+						"value": "2023-07-30 12:00:00",
+						"type": "text"
+					},
+					{
+						"key": "location",
+						"value": "orlando,seattle",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/query-sensor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"query-sensor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get aggregate weather data",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "start",
+						"value": "2023-07-30 00:00:00",
+						"type": "text"
+					},
+					{
+						"key": "end",
+						"value": "2023-07-30 12:00:00",
+						"type": "text"
+					},
+					{
+						"key": "location",
+						"value": "seattle",
+						"type": "text"
+					},
+					{
+						"key": "type",
+						"value": "avg",
+						"description": "can also use min,max",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/aggregate-sensor-data",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"aggregate-sensor-data"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
