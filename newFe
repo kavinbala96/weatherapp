@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import Select from 'react-select';
-import { OptionTypeBase, ValueType } from 'react-select';
+import { SingleValue } from 'react-select';
 
-interface MarkdownFileOption extends OptionTypeBase {
+interface OptionType {
   label: string;
   value: string;
 }
@@ -11,7 +11,7 @@ interface MarkdownFileOption extends OptionTypeBase {
 const App: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<string>('');
   const [markdown, setMarkdown] = useState<string>('');
-  const [options, setOptions] = useState<MarkdownFileOption[]>([]);
+  const [options, setOptions] = useState<OptionType[]>([]);
 
   useEffect(() => {
     // Load the list of markdown files from the index.json
@@ -27,12 +27,12 @@ const App: React.FC = () => {
     if (selectedFile) {
       // Fetch the markdown file content when a file is selected
       fetch(selectedFile)
-        .then(response => response.json())
+        .then(response => response.text()) // Changed from .json() to .text() for Markdown files
         .then(text => setMarkdown(text));
     }
   }, [selectedFile]);
 
-  const handleChange = (option: ValueType<MarkdownFileOption, false>) => {
+  const handleChange = (option: SingleValue<OptionType>) => {
     if (option) {
       setSelectedFile(option.value);
     }
@@ -44,8 +44,9 @@ const App: React.FC = () => {
         options={options}
         onChange={handleChange}
         className="markdown-select"
+        value={options.find(option => option.value === selectedFile)} // Ensure the correct value is selected
       />
-      <ReactMarkdown children={markdown} />
+      <ReactMarkdown>{markdown}</ReactMarkdown>
     </div>
   );
 }
