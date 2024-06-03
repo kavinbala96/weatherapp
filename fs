@@ -8,9 +8,15 @@ const FileSelector: React.FC<FileSelectorProps> = ({ onSelectFile }) => {
   const [files, setFiles] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch(`${process.env.PUBLIC_URL}/names.json`)
-      .then(response => response.json())
+    fetch('/names.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
+        console.log('Fetched data:', data); // Debugging step
         if (Array.isArray(data.names)) {
           setFiles(data.names);
         } else {
